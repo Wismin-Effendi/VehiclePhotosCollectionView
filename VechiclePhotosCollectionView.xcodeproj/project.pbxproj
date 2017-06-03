@@ -8,20 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		37957F841EE308EB00D1E23E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37957F831EE308EB00D1E23E /* AppDelegate.swift */; };
-		37957F861EE308EB00D1E23E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37957F851EE308EB00D1E23E /* ViewController.swift */; };
 		37957F891EE308EB00D1E23E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37957F871EE308EB00D1E23E /* Main.storyboard */; };
 		37957F8B1EE308EB00D1E23E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37957F8A1EE308EB00D1E23E /* Assets.xcassets */; };
 		37957F8E1EE308EB00D1E23E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37957F8C1EE308EB00D1E23E /* LaunchScreen.storyboard */; };
+		37957F961EE30A8F00D1E23E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37957F951EE30A8F00D1E23E /* Photo.swift */; };
+		37957F981EE30AC500D1E23E /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37957F971EE30AC500D1E23E /* PhotoCell.swift */; };
+		37957F9A1EE30B3100D1E23E /* PhotoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37957F991EE30B3100D1E23E /* PhotoHeader.swift */; };
+		37957F9C1EE30BAF00D1E23E /* VehicleCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37957F9B1EE30BAF00D1E23E /* VehicleCollectionViewController.swift */; };
+		37957FA01EE3132E00D1E23E /* images in Resources */ = {isa = PBXBuildFile; fileRef = 37957F9F1EE3132E00D1E23E /* images */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		37957F801EE308EB00D1E23E /* VechiclePhotosCollectionView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VechiclePhotosCollectionView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37957F831EE308EB00D1E23E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		37957F851EE308EB00D1E23E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		37957F881EE308EB00D1E23E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		37957F8A1EE308EB00D1E23E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37957F8D1EE308EB00D1E23E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		37957F8F1EE308EB00D1E23E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		37957F951EE30A8F00D1E23E /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		37957F971EE30AC500D1E23E /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		37957F991EE30B3100D1E23E /* PhotoHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoHeader.swift; sourceTree = "<group>"; };
+		37957F9B1EE30BAF00D1E23E /* VehicleCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VehicleCollectionViewController.swift; sourceTree = "<group>"; };
+		37957F9F1EE3132E00D1E23E /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,9 +63,13 @@
 			isa = PBXGroup;
 			children = (
 				37957F831EE308EB00D1E23E /* AppDelegate.swift */,
-				37957F851EE308EB00D1E23E /* ViewController.swift */,
+				37957F9B1EE30BAF00D1E23E /* VehicleCollectionViewController.swift */,
+				37957F971EE30AC500D1E23E /* PhotoCell.swift */,
+				37957F991EE30B3100D1E23E /* PhotoHeader.swift */,
+				37957F951EE30A8F00D1E23E /* Photo.swift */,
 				37957F871EE308EB00D1E23E /* Main.storyboard */,
 				37957F8A1EE308EB00D1E23E /* Assets.xcassets */,
+				37957F9F1EE3132E00D1E23E /* images */,
 				37957F8C1EE308EB00D1E23E /* LaunchScreen.storyboard */,
 				37957F8F1EE308EB00D1E23E /* Info.plist */,
 			);
@@ -124,6 +136,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37957FA01EE3132E00D1E23E /* images in Resources */,
 				37957F8E1EE308EB00D1E23E /* LaunchScreen.storyboard in Resources */,
 				37957F8B1EE308EB00D1E23E /* Assets.xcassets in Resources */,
 				37957F891EE308EB00D1E23E /* Main.storyboard in Resources */,
@@ -137,8 +150,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37957F861EE308EB00D1E23E /* ViewController.swift in Sources */,
+				37957F961EE30A8F00D1E23E /* Photo.swift in Sources */,
+				37957F9C1EE30BAF00D1E23E /* VehicleCollectionViewController.swift in Sources */,
+				37957F981EE30AC500D1E23E /* PhotoCell.swift in Sources */,
 				37957F841EE308EB00D1E23E /* AppDelegate.swift in Sources */,
+				37957F9A1EE30B3100D1E23E /* PhotoHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
