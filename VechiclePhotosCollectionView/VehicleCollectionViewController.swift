@@ -18,6 +18,10 @@ class VehicleCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let width = collectionView!.frame.width / 3
+        let layout = collectionViewLayout as! UICollectionViewFlowLayout
+        layout.itemSize = CGSize(width: width, height: width)
 
         for i in 1...15 {
             if i > 9 {
@@ -30,7 +34,9 @@ class VehicleCollectionViewController: UICollectionViewController {
     }
 
 
-    // MARK: UICollectionViewDataSource/Users/wismin-effendi/Developer/CareerFoundry/Module_1/assets_download/collectionView/images
+    
+    
+    // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -50,8 +56,20 @@ class VehicleCollectionViewController: UICollectionViewController {
         return cell
     }
 
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath) as! PhotoHeader
+        let title = "Cars"
+        sectionHeader.title = title
+        
+        return sectionHeader
+    }
+    
     // MARK: UICollectionViewDelegate
 
+    
+    
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
