@@ -19,4 +19,18 @@ class PhotoCell: UICollectionViewCell {
             }
         }
     }
+    
+    // MARK: - Properties
+    override var isSelected: Bool {
+        didSet {
+            photoImageView.layer.borderWidth = isSelected ? 3 : 0
+        }
+    }
+    
+    // MARK: - View Life Cycle
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        photoImageView.layer.borderColor = UIColor.cyan.cgColor
+        isSelected = false
+    }
 }

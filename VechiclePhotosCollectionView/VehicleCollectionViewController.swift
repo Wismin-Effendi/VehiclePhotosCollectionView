@@ -11,13 +11,36 @@ import UIKit
 
 class VehicleCollectionViewController: UICollectionViewController {
 
+    // ui obj 
+    var editButton: UIBarButtonItem?
+    var addButton: UIBarButtonItem?
+    var deleteButton: UIBarButtonItem?
+    var cancelButton: UIBarButtonItem?
     
+    var selectedIndexPaths = Set<IndexPath>()  // Use Set to avoid duplicate items
+    
+    // Don't confuse this with isEditing which is buildIn  method for automatic handling of Edit/Done
+    var editingMode: Bool = false {
+        didSet {
+            collectionView?.allowsMultipleSelection = editingMode
+            collectionView?.selectItem(at: nil, animated: true, scrollPosition: UICollectionViewScrollPosition())
+            selectedIndexPaths.removeAll(keepingCapacity: false)
+        }
+    }
+    
+    
+    // for model data
     var carPhotos = [Photo]()
     var helicopterPhotos = [Photo]()
     var allPhotos = [[Photo]]()
     
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        showEditButton()
+        self.installsStandardGestureForInteractiveMovement = true // to enable gesture for cell reordering 
         
         let width = collectionView!.frame.width / 3
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
@@ -43,6 +66,99 @@ class VehicleCollectionViewController: UICollectionViewController {
         allPhotos.append(helicopterPhotos)
     }
     
+    
+    // MARK: - show  UIBarButtonItem(s) programmatically
+    private func showEditButton() {
+        editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped(_:)))
+        editButton!.isEnabled = true
+        self.navigationItem.setRightBarButtonItems([editButton!], animated: true)
+        
+        addButton?.isEnabled = false
+        deleteButton?.isEnabled = false
+        cancelButton?.isEnabled = false
+        
+        // disable Editing mode
+        editingMode = false
+    }
+    
+    
+    
+    private func showAddDeleteCancelButton() {
+        
+        addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped(_:)))
+        deleteButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonTapped(_:)))
+        cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped(_:)))
+        addButton!.isEnabled = true
+        deleteButton!.isEnabled = true
+        cancelButton!.isEnabled = true
+        self.navigationItem.setRightBarButtonItems([cancelButton!, deleteButton!, addButton!], animated: true)
+        editButton?.isEnabled = false
+        
+        // enable Editing mode
+        editingMode = true
+    }
+
+    
+    // MARK: button actions 
+    func editButtonTapped(_ sender: UIBarButtonItem) {
+        showAddDeleteCancelButton()
+    }
+    
+    func addButtonTapped(_ sender: UIBarButtonItem) {
+        let randomLessThan10 = arc4random_uniform(10)
+        let i = randomLessThan10
+        let photo0 = Photo(title: "New Car", kind: .car, imageName: "images/extra_car0\(i).jpeg")
+        let photo1 = Photo(title: "New Helicopter", kind: .car, imageName: "images/extra_chop0\(i).jpeg")
+        let index0 = allPhotos[0].count
+        let index1 = allPhotos[1].count
+        allPhotos[0].append(photo0)
+        allPhotos[1].append(photo1)
+        let indexPath0 = IndexPath(item: index0, section: 0)
+        let indexPath1 = IndexPath(item: index1, section: 1)
+        collectionView?.insertItems(at: [indexPath0, indexPath1])
+    }
+    
+    
+    func deleteButtonTapped(_ sender: UIBarButtonItem) {
+        collectionView?.performBatchUpdates({ _ in
+            
+            let selectedIndexPathsInReverseOrder = self.selectedIndexPaths.sorted(by: self.sortIndexPathsReverse)
+            print("Content of selectedPath reverse order: \(selectedIndexPathsInReverseOrder)")
+            for indexPath in selectedIndexPathsInReverseOrder {
+                print(indexPath)
+                self.allPhotos[indexPath.section].remove(at: indexPath.row)
+            }
+            self.collectionView?.deleteItems(at: selectedIndexPathsInReverseOrder)
+        }, completion: nil)
+        
+        // emptied the selectedIndexPaths for deletion 
+        selectedIndexPaths.removeAll()
+    }
+    
+    func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        // emptied the selectedIndexPaths for deletion
+        selectedIndexPaths.removeAll()
+        
+        // and
+        showEditButton()
+    }
+
+    
+    // MARK: - helper for sorting IndexPath in reverse order 
+    // We need to sort in reverse order since we allow deletion of multiple items in one click 
+    // Thus we should delete from the end, or else we'll delete the wrong item or get into index out of bounds
+    // sort in reverse order prevent that from happening.
+    private func sortIndexPathsReverse(indexPath1: IndexPath, indexPath2: IndexPath) -> Bool {
+        if indexPath1.section > indexPath2.section {
+            return true
+        } else if (indexPath1.section < indexPath2.section) {
+            return false
+        } else if (indexPath1.row >= indexPath2.row) {
+            return true
+        } else {
+            return false
+        }
+    }
     
     // MARK: UICollectionViewDataSource
 
@@ -79,37 +195,42 @@ class VehicleCollectionViewController: UICollectionViewController {
         return sectionHeader
     }
     
+    // added for cell reordering
+    override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let itemToMove = allPhotos[sourceIndexPath.section][sourceIndexPath.row]
+        
+        allPhotos[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+        
+        if sourceIndexPath.section == destinationIndexPath.section {
+            allPhotos[sourceIndexPath.section].insert(itemToMove, at: destinationIndexPath.row)
+        } else {
+            allPhotos[destinationIndexPath.section].insert(itemToMove, at: destinationIndexPath.row)
+        }
+    }
+    
+    // added for cell deletion
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard editingMode else { return }
+        selectedIndexPaths.insert(indexPath)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard editingMode else { return }
+        
+        if let indexInSelectedIndexPaths = selectedIndexPaths.index(of: indexPath) {
+            selectedIndexPaths.remove(at: indexInSelectedIndexPaths)
+        }
+        
+    }
+    
+    
+    
     // MARK: UICollectionViewDelegate
 
-    
-    
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
+        return editingMode
     }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
-    }
-    */
 
 }
